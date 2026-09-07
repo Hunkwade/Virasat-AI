@@ -1,0 +1,349 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Virasat AI design system — light, editorial, gradient-mesh.
+ * Palette from the deck: paper white, ink black, ember red/coral, orchid.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
+  --radius-3xl: calc(var(--radius) + 20px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ember: var(--ember);
+  --color-orchid: var(--orchid);
+  --color-saffron: var(--saffron);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.995 0.002 90);
+  --foreground: oklch(0.16 0.006 285);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.006 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.006 285);
+  --primary: oklch(0.585 0.204 27.5);
+  --primary-foreground: oklch(0.99 0.005 90);
+  --secondary: oklch(0.965 0.006 60);
+  --secondary-foreground: oklch(0.22 0.008 285);
+  --muted: oklch(0.965 0.006 60);
+  --muted-foreground: oklch(0.52 0.012 285);
+  --accent: oklch(0.955 0.028 30);
+  --accent-foreground: oklch(0.4 0.15 27);
+  --ember: oklch(0.63 0.2 32);
+  --orchid: oklch(0.72 0.14 315);
+  --saffron: oklch(0.78 0.15 65);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0.005 90);
+  --border: oklch(0.915 0.005 60);
+  --input: oklch(0.915 0.005 60);
+  --ring: oklch(0.63 0.2 32);
+
+  --gradient-mesh: radial-gradient(
+      55% 60% at 78% 18%,
+      color-mix(in oklab, var(--ember) 62%, transparent) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      48% 55% at 92% 62%,
+      color-mix(in oklab, var(--orchid) 55%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 46% at 62% 88%,
+      color-mix(in oklab, var(--saffron) 48%, transparent) 0%,
+      transparent 72%
+    );
+  --shadow-soft: 0 1px 2px oklch(0.16 0.006 285 / 0.04),
+    0 10px 34px -14px oklch(0.16 0.006 285 / 0.14);
+  --shadow-lift: 0 2px 4px oklch(0.16 0.006 285 / 0.04),
+    0 24px 60px -22px oklch(0.16 0.006 285 / 0.22);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* ---- Utilities ---- */
+
+@utility mesh {
+  background-image: var(--gradient-mesh);
+  filter: blur(28px) saturate(1.05);
+}
+
+@utility grain {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  }
+}
+
+@utility surface {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+}
+
+@utility lift {
+  box-shadow: var(--shadow-lift);
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--foreground) 20%,
+    var(--ember) 58%,
+    var(--orchid) 92%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-3%, 2%, 0) scale(1.08) rotate(6deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@utility animate-drift {
+  animation: drift 22s ease-in-out infinite;
+}
+
+@utility animate-rise {
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-blink {
+  animation: blink 1.1s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Markdown answers rendered in the chat stream */
+.prose-chat > * + * {
+  margin-top: 0.7rem;
+}
+.prose-chat h1,
+.prose-chat h2,
+.prose-chat h3 {
+  font-family: var(--font-display, inherit);
+  font-weight: 700;
+  font-size: 1.02em;
+  letter-spacing: -0.01em;
+}
+.prose-chat strong {
+  font-weight: 700;
+}
+.prose-chat ul,
+.prose-chat ol {
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.prose-chat ul {
+  list-style: disc;
+}
+.prose-chat ol {
+  list-style: decimal;
+}
+.prose-chat a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.prose-chat code {
+  background: var(--secondary);
+  border-radius: 6px;
+  padding: 0.08em 0.34em;
+  font-size: 0.92em;
+}
+.prose-chat h3 {
+  margin-top: 1.1rem;
+}
+.prose-chat table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.92em;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+.prose-chat thead th {
+  background: var(--secondary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.86em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+.prose-chat th,
+.prose-chat td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  min-width: 92px;
+  overflow-wrap: break-word;
+}
+.prose-chat td:first-child,
+.prose-chat th:first-child {
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  font-weight: 600;
+}
+.prose-chat tbody tr:last-child td {
+  border-bottom: 0;
+}
+.prose-chat tbody tr:nth-child(even) td {
+  background: color-mix(in oklab, var(--secondary) 45%, transparent);
+}
+.prose-chat table strong {
+  color: var(--foreground);
+}
+
+@media (max-width: 640px) {
+  .prose-chat {
+    font-size: 14px;
+  }
+  .prose-chat table {
+    font-size: 0.84em;
+    border-radius: 12px;
+  }
+  .prose-chat table tbody,
+  .prose-chat table thead {
+    min-width: 780px;
+    display: table;
+    width: 100%;
+  }
+  .prose-chat th,
+  .prose-chat td {
+    padding: 0.45rem 0.55rem;
+    min-width: 84px;
+  }
+  .prose-chat td:first-child,
+  .prose-chat th:first-child {
+    white-space: nowrap;
+    min-width: 96px;
+  }
+  .prose-chat td:nth-child(2),
+  .prose-chat th:nth-child(2) {
+    min-width: 140px;
+  }
+  .prose-chat td:last-child,
+  .prose-chat th:last-child {
+    min-width: 190px;
+  }
+}
+
+
