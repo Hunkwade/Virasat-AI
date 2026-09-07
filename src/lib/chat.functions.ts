@@ -126,11 +126,25 @@ function stripTables(text: string): string {
 const planIntent = (text: string) =>
   /\b(plan|itinerar|day\s*\d|\d+\s*day|schedule|trip)\b/i.test(text);
 
+/** Read an env var across Node, Vercel and Worker-style runtimes. */
+function readEnv(name: string): string | undefined {
+  const sources: Array<Record<string, string | undefined> | undefined> = [
+    typeof process !== "undefined" ? (process.env as Record<string, string | undefined>) : undefined,
+    (globalThis as { env?: Record<string, string | undefined> }).env,
+    (globalThis as { __env?: Record<string, string | undefined> }).__env,
+  ];
+  for (const src of sources) {
+    const v = src?.[name] ?? src?.[`VITE_${name}`];
+    if (typeof v === "string" && v.trim()) return v.trim();
+  }
+  return undefined;
+}
+
 export const askVirasat = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ChatInput.parse(input))
   .handler(async ({ data }): Promise<ChatReply> => {
     const system = buildSystemPrompt(data.profile);
-    const geminiKey = process.env["GEMINI_API_KEY"];
+    const geminiKey = readEnv("GEMINI_API_KEY");
     const lastUserMsg =
       [...data.messages].reverse().find((m) => m.role === "user")?.content ?? "";
     const clean = (text: string) => (planIntent(lastUserMsg) ? text : stripTables(text));
@@ -151,7 +165,7 @@ export const askVirasat = createServerFn({ method: "POST" })
       engine: "offline",
     });
 
-    const lovableKey = process.env["LOVABLE_API_KEY"];
+    const lovableKey = readEnv("LOVABLE_API_KEY");
     if (!lovableKey) return offline();
 
     try {
